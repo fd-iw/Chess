@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Christian's Chess Academy</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- HOME -->
+    <section id="screen-home" class="screen active">
+      <header class="topbar"><div class="logo">♞ <span>Christian's</span> Chess Academy</div></header>
+      <div class="scroll">
+        <div class="welcome card">
+          <div class="avatar-big">🧑‍🎓</div>
+          <div>
+            <div class="hello">Hey Christian! 👋</div>
+            <div class="rank-line"><span id="home-rank">Beginner</span> · <span id="home-xp">0</span> XP</div>
+            <div class="xpbar"><div id="home-xpfill"></div></div>
+          </div>
+        </div>
+        <button class="big-btn green" data-go="levels"><span class="ic">🤖</span><span><b>Play vs Bots</b><small id="home-next">Next: Level 1</small></span></button>
+        <button class="big-btn" id="btn-continue" style="display:none"><span class="ic">▶️</span><span><b>Continue Game</b><small id="continue-sub"></small></span></button>
+        <button class="big-btn" data-go="puzzles"><span class="ic">🧩</span><span><b>Puzzles</b><small id="home-puzzles">0 solved</small></span></button>
+        <button class="big-btn" data-go="learn"><span class="ic">🎓</span><span><b>Lessons</b><small>Learn how to beat real players</small></span></button>
+        <button class="big-btn" data-go="awards"><span class="ic">🏅</span><span><b>Achievements</b><small id="home-awards">0 unlocked</small></span></button>
+        <div class="card tip"><b>💡 Tip of the day</b><p id="tip"></p></div>
+      </div>
+    </section>
+
+    <!-- LEVELS -->
+    <section id="screen-levels" class="screen">
+      <header class="topbar"><button class="back" data-go="home">‹</button><div class="title">Choose a Bot</div></header>
+      <div class="scroll">
+        <div class="color-pick card">
+          <span>Play as</span>
+          <div class="seg" id="color-seg">
+            <button data-color="w" class="on">⚪ White</button><button data-color="r">🎲 Random</button><button data-color="b">⚫ Black</button>
+          </div>
+        </div>
+        <div id="level-list"></div>
+      </div>
+    </section>
+
+    <!-- GAME -->
+    <section id="screen-game" class="screen">
+      <header class="topbar"><button class="back" id="game-back">‹</button><div class="title" id="game-title">Game</div><button class="icon-btn" id="btn-settings" title="Settings">⚙️</button></header>
+      <div class="game-wrap">
+        <div class="player-row" id="opp-row"><span class="pavatar" id="opp-avatar">🤖</span><div class="pinfo"><b id="opp-name">Bot</b><small id="opp-elo"></small></div><div class="captured" id="opp-captured"></div></div>
+        <div class="board-area">
+          <div class="evalbar" id="evalbar"><div id="evalfill"></div><span id="evaltext">0.0</span></div>
+          <div class="board-holder"><div id="board" class="board"></div><svg id="arrows" class="arrows" viewBox="0 0 800 800"></svg></div>
+        </div>
+        <div class="player-row" id="me-row"><span class="pavatar">🧑‍🎓</span><div class="pinfo"><b>Christian</b><small id="me-rank"></small></div><div class="captured" id="me-captured"></div></div>
+        <div class="coach" id="coach"><div class="coach-face">🦉</div><div class="coach-msg" id="coach-msg">Good luck, Christian! Tap a piece to move it.</div></div>
+        <div class="moves" id="moves"></div>
+        <div class="controls">
+          <button id="btn-hint" class="ctl"><span>💡</span>Hint</button>
+          <button id="btn-undo" class="ctl"><span>↩️</span>Undo</button>
+          <button id="btn-flip" class="ctl"><span>🔄</span>Flip</button>
+          <button id="btn-resign" class="ctl"><span>🏳️</span>Resign</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PUZZLES -->
+    <section id="screen-puzzles" class="screen">
+      <header class="topbar"><button class="back" data-go="home">‹</button><div class="title">Puzzles</div></header>
+      <div class="scroll"><div id="puzzle-list" class="grid"></div></div>
+    </section>
+
+    <section id="screen-puzzle" class="screen">
+      <header class="topbar"><button class="back" data-go="puzzles">‹</button><div class="title" id="pz-title">Puzzle</div></header>
+      <div class="game-wrap">
+        <div class="pz-banner" id="pz-banner">White to move</div>
+        <div class="board-holder solo"><div id="pz-board" class="board"></div></div>
+        <div class="coach"><div class="coach-face">🦉</div><div class="coach-msg" id="pz-msg"></div></div>
+        <div class="controls">
+          <button id="pz-hint" class="ctl"><span>💡</span>Hint</button>
+          <button id="pz-reset" class="ctl"><span>🔁</span>Retry</button>
+          <button id="pz-next" class="ctl green"><span>➡️</span>Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEARN -->
+    <section id="screen-learn" class="screen">
+      <header class="topbar"><button class="back" data-go="home">‹</button><div class="title">Lessons</div></header>
+      <div class="scroll"><div id="lesson-list"></div></div>
+    </section>
+    <section id="screen-lesson" class="screen">
+      <header class="topbar"><button class="back" data-go="learn">‹</button><div class="title" id="lesson-title">Lesson</div></header>
+      <div class="scroll" id="lesson-body"></div>
+    </section>
+
+    <!-- AWARDS -->
+    <section id="screen-awards" class="screen">
+      <header class="topbar"><button class="back" data-go="home">‹</button><div class="title">Achievements</div></header>
+      <div class="scroll">
+        <div class="card stats" id="stats"></div>
+        <div id="award-list"></div>
+        <button class="small-btn danger" id="btn-reset">Reset all progress</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modals -->
+  <div class="modal" id="modal"><div class="modal-box" id="modal-box"></div></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="js/engine.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

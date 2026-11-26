@@ -1,0 +1,40 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.christian.chessacademy'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.christian.chessacademy'
+        minSdk 26          // Android 8.0+, works on Android 12
+        targetSdk 34
+        versionCode Integer.parseInt((project.findProperty('versionCode') ?: '1').toString())
+        versionName "1.0.${project.findProperty('versionCode') ?: '1'}"
+    }
+
+    // A fixed key so every new build installs as an update over the old one
+    // (keeps Christian's progress). This is a hobby key, not a Play Store key.
+    signingConfigs {
+        shared {
+            storeFile file('chess-academy.keystore')
+            storePassword 'chessacademy'
+            keyAlias 'chessacademy'
+            keyPassword 'chessacademy'
+        }
+    }
+
+    buildTypes {
+        debug { signingConfig signingConfigs.shared }
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.shared
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

@@ -1,0 +1,55 @@
+name: Build Android APK
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Test chess engine and puzzles
+        run: |
+          node tests/perft.test.js
+          node tests/puzzles.test.js
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Build APK
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleRelease -PversionCode=${{ github.run_number }}
+          mkdir -p out
+          cp app/build/outputs/apk/release/app-release.apk out/ChessAcademy-Christian.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChessAcademy-Christian-apk
+          path: out/ChessAcademy-Christian.apk
+
+      - name: Publish release (easy download on the phone)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Christian's Chess Academy (build ${{ github.run_number }})
+          target_commitish: ${{ github.sha }}
+          make_latest: true
+          body: |
+            Download **ChessAcademy-Christian.apk** below on the Android phone and open it to install.
+            If Android asks, allow "Install unknown apps" for your browser or Files app.
+          files: out/ChessAcademy-Christian.apk
